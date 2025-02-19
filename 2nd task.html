@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Planner</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.10.3/cdn.min.js" defer></script>
+    <style>
+        .task { cursor: grab; padding: 12px; background: #ffffff; border-radius: 8px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
+        .task-container { min-height: 250px; background: #f8fafc; padding: 12px; border-radius: 8px; border: 2px dashed #d1d5db; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    
+    <!-- Navbar -->
+    <nav class="bg-blue-800 p-4 text-white text-center font-bold text-lg">Task Planner</nav>
+    
+    <!-- Task Sections -->
+    <div class="container mx-auto p-5">
+        <div class="grid grid-cols-2 gap-4">
+            
+            <!-- Section 1 -->
+            <div>
+                <h2 class="text-xl font-semibold mb-3 text-gray-700">Pending Tasks</h2>
+                <div id="taskList" class="task-container" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    <div class="task" draggable="true" ondragstart="drag(event)" id="task1">Design Homepage</div>
+                    <div class="task" draggable="true" ondragstart="drag(event)" id="task2">Develop Backend API</div>
+                </div>
+            </div>
+            
+            <!-- Section 2 -->
+            <div>
+                <h2 class="text-xl font-semibold mb-3 text-gray-700">Ongoing Work</h2>
+                <div id="inProgress" class="task-container" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            ev.target.appendChild(document.getElementById(data));
+        }
+    </script>
+</body>
+</html>
