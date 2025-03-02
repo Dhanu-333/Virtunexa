@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+        }
+        .countdown-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            color: #333;
+        }
+        button {
+            transition: transform 0.2s ease-in-out;
+        }
+        button:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center h-screen">
+    
+    <!-- Navbar -->
+    <nav class="w-full bg-blue-700 text-white p-4 fixed top-0 text-center text-lg font-bold shadow-md">
+        Countdown Timer
+    </nav>
+    
+    <!-- Countdown Section -->
+    <div class="mt-20 countdown-container">
+        <h2 class="text-2xl font-semibold">Set Your Countdown</h2>
+        <input type="datetime-local" id="event-time" class="border p-2 mt-4 rounded w-full">
+        <button onclick="startCountdown()" class="bg-blue-600 text-white px-4 py-2 mt-2 rounded hover:bg-blue-700">Start</button>
+        
+        <h3 class="text-xl font-bold mt-4">Time Remaining:</h3>
+        <p id="countdown" class="text-3xl text-red-500 mt-2">00:00:00</p>
+    </div>
+    
+    <script>
+        let countdownInterval;
+        
+        function startCountdown() {
+            const eventTime = new Date(document.getElementById("event-time").value).getTime();
+            const countdownElement = document.getElementById("countdown");
+            
+            if (!eventTime) {
+                alert("Please select a valid date and time!");
+                return;
+            }
+            
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
+            
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const timeLeft = eventTime - now;
+                
+                if (timeLeft <= 0) {
+                    countdownElement.innerHTML = "Time's up!";
+                    clearInterval(countdownInterval);
+                    return;
+                }
+                
+                const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                const hours = String(Math.floor((timeLeft / (1000 * 60 * 60)) % 24)).padStart(2, '0');
+                const minutes = String(Math.floor((timeLeft / (1000 * 60)) % 60)).padStart(2, '0');
+                const seconds = String(Math.floor((timeLeft / 1000) % 60)).padStart(2, '0');
+                
+                countdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            }
+            
+            updateCountdown();
+            countdownInterval = setInterval(updateCountdown, 1000);
+        }
+    </script>
+</body>
+</html>
